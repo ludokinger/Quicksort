@@ -1,0 +1,6 @@
+{
+  "name": "AlgDat I --- Blatt 3",
+  // "image": "rikorose/gcc-cmake:latest",
+  "image": "obraun/algdati-valgrind-ci:latest",
+  "extensions": ["ms-vscode.cpptools"]
+}
