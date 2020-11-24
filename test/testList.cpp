@@ -158,3 +158,43 @@ TEST(ListTest, SortTest_SevenElementsInList) {
   l.sort(greaterThan);
   EXPECT_TRUE(l.isSorted(greaterThan));
 }
+
+TEST(ListTest, InsertTest_TwoElementsSameKey) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(1, "Zwei");
+  l += tin1;
+  l += tin2;
+  auto tu = l.popHead();
+  EXPECT_EQ(std::get<1>(tu), "Zwei");
+}
+
+TEST(ListTest, RemoveTest_WithFourElements) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  std::tuple<int, std::string> tin3(3, "Drei");
+  std::tuple<int, std::string> tin4(4, "Vier");
+  l += tin1;
+  l += tin2;
+  l += tin3;
+  l += tin4;
+  l -= 1;
+  EXPECT_FALSE(l.search(1));
+  l -= 2;
+  EXPECT_FALSE(l.search(2));
+  l -= 3;
+  EXPECT_FALSE(l.search(3));
+  l -= 4;
+  EXPECT_FALSE(l.search(4));
+  EXPECT_TRUE(l.isEmpty());
+}
+
+TEST(ListTest, RemoveTest_RemoveNotPresentKey) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  l += tin1;
+  EXPECT_NO_THROW(l -= 5);
+  EXPECT_FALSE(l.isEmpty());
+  EXPECT_EQ(std::get<1>(l.popHead()), "Eins");
+}
