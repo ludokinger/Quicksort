@@ -15,7 +15,6 @@ class list {
     element *next;
 
     element(const std::tuple<K, V>, element *);
-    ~element();
   };
 
   element *head = nullptr;
@@ -62,17 +61,12 @@ list<K, V>::element::element(const std::tuple<K, V> tuple, list::element *elemen
  */
 template <typename K, typename V>
 list<K, V>::~list() {
-  delete head;
-}
-
-/**
- * Destructor for struct element
- * @tparam K
- * @tparam V
- */
-template <typename K, typename V>
-list<K, V>::element::~element() {
-  delete next;
+  element *tmp;
+  while (head != nullptr) {
+    tmp = head->next;
+    delete head;
+    head = tmp;
+  }
 }
 
 
