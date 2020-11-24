@@ -130,8 +130,27 @@ void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
  * @param tuple
  * @return
  */
-template <typename K, typename V>
-list<K, V> &list<K, V>::operator+=(const std::tuple<K, V>) {
+template<typename K, typename V>
+list<K, V> &list<K, V>::operator+=(const std::tuple<K, V> el) {
+  auto elem = new typename list<K, V>::element(el, nullptr);
+  K key = std::get<0>(el);
+  if (head == nullptr || head->key == key) {
+    head = elem;
+    return *this;
+  }
+  element *current = head;
+  element *next = head->next;
+  while (next != nullptr) {
+    if (next->key == key) {
+      elem->next = next->next;
+      current->next = elem;
+      next->next = nullptr;
+      return *this;
+    }
+    current = current->next;
+    next = current->next;
+  }
+  current->next = elem;
   return *this;
 }
 
