@@ -164,63 +164,73 @@ void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
  * @tparam V
  * @param elem
  * @param lessThan
- * @return
+ * @return a element according to which only sorted elements are
  */
 template<typename K, typename V>
 struct list<K, V>::element* list<K, V>::quicksort(list::element *elem, std::function<bool(K, K)> lessThan) {
 
-  if (elem == nullptr || elem->next == nullptr) {
+  if (elem == nullptr || elem->next == nullptr) {        // 1  (a)
     return elem;
   }
 
-  element *current = elem->next;
-  element *next;
-  element *pivot = elem;
-  pivot->next = nullptr;
-  element *lh = nullptr;
-  element *rh = nullptr;
+  element *current = elem->next;                        // 1   (a)
+  element *next;                                        // 1   (a)
+  element *pivot = elem;                                // 1   (a)
+  pivot->next = nullptr;                                // 1   (a)
+  element *lh = nullptr;                                // 1   (a)
+  element *rh = nullptr;                                // 1   (a)
+                                                        // Therefore part (a) is O(1)
 
-  while (current != nullptr) {
-    if (lessThan(current->key, pivot->key)) {
-      if (lh == nullptr) {
-        lh = current;
-        current = current->next;
-        lh->next = nullptr;
-      } else {
-        next = current->next;
-        current->next = lh;
-        lh = current;
-        current = next;
+  while (current != nullptr) {                          // n        (b)
+    if (lessThan(current->key, pivot->key)) {           // n        (b)
+      if (lh == nullptr) {                              // max. 1   (b)(b1)
+        lh = current;                                   // 1        (b)(b1)
+        current = current->next;                        // 1        (b)(b1)
+        lh->next = nullptr;                             // 1        (b)(b1)   -> (b1) max. 3
+      } else {                                          // max. n-1 (b)(b2)
+        next = current->next;                           // 1        (b)(b2)
+        current->next = lh;                             // 1        (b)(b2)
+        lh = current;                                   // 1        (b)(b2)
+        current = next;                                 // 1        (b)(b2)   -> (b2) max 4(n-1)
       }
-    } else {
-      if (rh == nullptr) {
-        rh = current;
-        current = current->next;
-        rh->next = nullptr;
-      } else {
-        next = current->next;
-        current->next = rh;
-        rh = current;
-        current = next;
+    } else {                                            // max. n   (b)(b3)
+      if (rh == nullptr) {                              // max. 1   (b)(b3)
+        rh = current;                                   // 1        (b)(b3)
+        current = current->next;                        // 1        (b)(b3)
+        rh->next = nullptr;                             // 1        (b)(b3)   -> (b3) max. 3
+      } else {                                          // max. n-1 (b)(b4)
+        next = current->next;                           // 1        (b)(b4)
+        current->next = rh;                             // 1        (b)(b4)
+        rh = current;                                   // 1        (b)(b4)
+        current = next;                                 // 1        (b)(b4)   -> (b4) max. 4(n-1)
       }
     }
-  }
+  }                                                     // Therefore part (b) is:
+                                                        // Worst-Case: T(n) = n + n + 3 + 4(n-1) + 3 + 4(n-1) = 10n - 2, T(n) is O(n)
+                                                        // Best-Case: T(n) = n + n = 2n, T(n) is O(n)
+                                                        // => O(n)
 
-  lh = quicksort(lh, lessThan);
-  rh = quicksort(rh, lessThan);
+  lh = quicksort(lh, lessThan);                         // ((a) + (b) + (d))/2 = T(n/2)                                         (c)
+  rh = quicksort(rh, lessThan);                         // both calls together: 2*T(n/2) = n + 2 * (n/2) + 4 * (n/4) + ...      (c)
+                                                        // Therefore part (c): T(n) = nlogn, T(n) is O(nlogn)
 
-  if (lh == nullptr) {
-    pivot->next = rh;
-    return pivot;
-  } else {
-    element *lh_end = lh;
-    while (lh_end->next != nullptr) {
-      lh_end = lh_end->next;
+  if (lh == nullptr) {                                  // 1         (d)(d1)
+    pivot->next = rh;                                   // max. 1    (d)(d1)
+    return pivot;                                       // max. 1    (d)(d1)   -> (d1) max 3 operations, min. 1
+  } else {                                              // 1         (d)(d2)
+    element *lh_end = lh;                               // 1         (d)(d2)
+    while (lh_end->next != nullptr) {                   // max. n    (d)(d2)
+      lh_end = lh_end->next;                            // max. n    (d)(d2)   -> (d2) max. 2n + 2, min. 1
     }
-    lh_end->next = pivot;
-    pivot->next = rh;
-    return lh;
-  }
+    lh_end->next = pivot;                               // 1         (d)
+    pivot->next = rh;                                   // 1         (d)
+    return lh;                                          // 1         (d)
+  }                                                     // Therefore part (d) is:
+                                                        // Worst-Case: T(n) = 3 + 2n + 2 + 3 = 2n + 8, T(n) is O(n)
+                                                        // Best-Case:  T(n) = 1, T(n) is O(1)
+                                                        // => O(n)
+
+                                                        // Therefore (a) + (b) + (c) + (d) = O(1) + O(n) + O(nlogn) + O(n) = O(nlogn)
 }
 
 
@@ -270,31 +280,30 @@ list<K, V> &list<K, V>::operator+=(const std::tuple<K, V> el) {
  */
 template <typename K, typename V>
 list<K, V> &list<K, V>::operator-=(const K newKey) {
-  auto *thisElem = head;
-  if (head == nullptr)
-    return *this;
-
-  auto *nextElem = thisElem->next;
-  if (head->key == newKey && nextElem == nullptr) {
-    delete head;
-    head = nullptr;
+  if (head == nullptr) {
     return *this;
   }
 
-  if (head->key == newKey && nextElem != nullptr) {
-    delete head;
-    head = nextElem;
-    return *this;
-  }
+  element *current = head;
+  element *prev = nullptr;
 
-  while (nextElem != nullptr) {
-    if (nextElem->key == newKey) {
-      if (nextElem->next != nullptr)
-        thisElem->next = nextElem->next;
-      thisElem->next = nullptr;
-      delete nextElem;
-      nextElem = nullptr;
+  while (current != nullptr) {
+    if (current->key == newKey) {
+      element *t = current->next;
+      if (prev == nullptr) {
+        head->next = nullptr;
+        delete head;
+        head = t;
+        return *this;
+      }
+      current->next = nullptr;
+      prev->next = t;
+      delete current;
+      current = t;
+      return *this;
     }
+    prev = current;
+    current = current->next;
   }
   return *this;
 }
