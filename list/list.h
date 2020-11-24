@@ -78,7 +78,13 @@ list<K, V>::~list() {
  * @return value of element with this key
  */
 template <typename K, typename V>
-const V *list<K, V>::search(const K) const {
+const V *list<K, V>::search(const K key) const {
+  auto elem = head;
+  while (elem != nullptr) {
+    if (elem->key == key)
+      return &elem->value;
+    elem = elem-> next;
+  }
   return nullptr;
 }
 
