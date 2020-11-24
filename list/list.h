@@ -233,9 +233,14 @@ struct list<K, V>::element* list<K, V>::quicksort(list::element *elem, std::func
  */
 template<typename K, typename V>
 list<K, V> &list<K, V>::operator+=(const std::tuple<K, V> el) {
-  auto elem = new typename list<K, V>::element(el, nullptr);
+  auto *elem = new typename list<K, V>::element(el, nullptr);
   K key = std::get<0>(el);
-  if (head == nullptr || head->key == key) {
+  if (head == nullptr) {
+    head = elem;
+    return *this;
+  } else if (head->key == key) {
+    head->next = nullptr;
+    delete head;
     head = elem;
     return *this;
   }
@@ -271,11 +276,13 @@ list<K, V> &list<K, V>::operator-=(const K newKey) {
 
   auto *nextElem = thisElem->next;
   if (head->key == newKey && nextElem == nullptr) {
+    delete head;
     head = nullptr;
     return *this;
   }
 
   if (head->key == newKey && nextElem != nullptr) {
+    delete head;
     head = nextElem;
     return *this;
   }
@@ -285,6 +292,7 @@ list<K, V> &list<K, V>::operator-=(const K newKey) {
       if (nextElem->next != nullptr)
         thisElem->next = nextElem->next;
       thisElem->next = nullptr;
+      delete nextElem;
       nextElem = nullptr;
     }
   }
