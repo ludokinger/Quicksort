@@ -230,7 +230,9 @@ struct list<K, V>::element* list<K, V>::quicksort(list::element *elem, std::func
                                                         // Best-Case:  T(n) = 1, T(n) is O(1)
                                                         // => O(n)
 
+
                                                         // Therefore (a) + (b) + (c) + (d) = O(1) + O(n) + O(nlogn) + O(n) = O(nlogn)
+                                                        // => O(nlogn)
 }
 
 
