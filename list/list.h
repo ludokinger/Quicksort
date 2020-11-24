@@ -65,6 +65,11 @@ list<K, V>::~list() {
   delete head;
 }
 
+/**
+ * Destructor for struct element
+ * @tparam K
+ * @tparam V
+ */
 template <typename K, typename V>
 list<K, V>::element::~element() {
   delete next;
