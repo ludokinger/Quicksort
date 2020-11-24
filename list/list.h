@@ -121,7 +121,8 @@ std::tuple<K, V> list<K, V>::popHead() {
  */
 template <typename K, typename V>
 void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
-  lessThan = nullptr;
+  element *sorted = quicksort(head, lessThan);
+  head = sorted;
 }
 
 
