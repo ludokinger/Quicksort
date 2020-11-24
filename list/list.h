@@ -68,7 +68,7 @@ list<K, V>::~list() {}
  * @return value of element with this key
  */
 template <typename K, typename V>
-const V *list<K, V>::search(const K key) const {
+const V *list<K, V>::search(const K) const {
   return nullptr;
 }
 
@@ -94,6 +94,7 @@ bool list<K, V>::isEmpty() const {
  */
 template <typename K, typename V>
 bool list<K, V>::isSorted(std::function<bool(K, K)> lessThan) const {
+  lessThan = nullptr;
   return false;
 }
 
@@ -117,7 +118,9 @@ std::tuple<K, V> list<K, V>::popHead() {
  * @param lessThan function which compares two values
  */
 template <typename K, typename V>
-void list<K, V>::sort(std::function<bool(K, K)> lessThan) {}
+void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
+  lessThan = nullptr;
+}
 
 
 /**
@@ -128,7 +131,7 @@ void list<K, V>::sort(std::function<bool(K, K)> lessThan) {}
  * @return
  */
 template <typename K, typename V>
-list<K, V> &list<K, V>::operator+=(const std::tuple<K, V> tuple) {
+list<K, V> &list<K, V>::operator+=(const std::tuple<K, V>) {
   return *this;
 }
 
@@ -141,7 +144,7 @@ list<K, V> &list<K, V>::operator+=(const std::tuple<K, V> tuple) {
  * @return
  */
 template <typename K, typename V>
-list<K, V> &list<K, V>::operator-=(const K key) {
+list<K, V> &list<K, V>::operator-=(const K) {
   return *this;
 }
 
@@ -153,7 +156,9 @@ list<K, V> &list<K, V>::operator-=(const K key) {
  * @param ostr
  */
 template <typename K, typename V>
-void list<K, V>::printTo(std::ostream &ostr) const {}
+void list<K, V>::printTo(std::ostream &ostr) const {
+  ostr.clear();
+}
 
 
 template <typename K, typename V>
