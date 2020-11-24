@@ -256,14 +256,37 @@ list<K, V> &list<K, V>::operator+=(const std::tuple<K, V> el) {
 
 
 /**
- * Removes element with key
+ * Removes element by key
  * @tparam K
  * @tparam V
  * @param key
- * @return
+ * @return list
  */
 template <typename K, typename V>
-list<K, V> &list<K, V>::operator-=(const K) {
+list<K, V> &list<K, V>::operator-=(const K newKey) {
+  auto *thisElem = head;
+  if (head == nullptr)
+    return *this;
+
+  auto *nextElem = thisElem->next;
+  if (head->key == newKey && nextElem == nullptr) {
+    head = nullptr;
+    return *this;
+  }
+
+  if (head->key == newKey && nextElem != nullptr) {
+    head = nextElem;
+    return *this;
+  }
+
+  while (nextElem != nullptr) {
+    if (nextElem->key == newKey) {
+      if (nextElem->next != nullptr)
+        thisElem->next = nextElem->next;
+      thisElem->next = nullptr;
+      nextElem = nullptr;
+    }
+  }
   return *this;
 }
 
