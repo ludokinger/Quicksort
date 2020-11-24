@@ -110,8 +110,18 @@ bool list<K, V>::isEmpty() const {
  */
 template <typename K, typename V>
 bool list<K, V>::isSorted(std::function<bool(K, K)> lessThan) const {
-  lessThan = nullptr;
-  return false;
+  auto *nextElement = head;
+  if (nextElement == nullptr) {
+    return false; /* or true müssen wir evtl. auch in einem eigenen Google Test festlegen */
+  }
+  while (nextElement->next != nullptr) {
+    if (lessThan(nextElement->key, nextElement->next->key)) {
+      nextElement = nextElement->next;
+    } else {
+      return false;
+    }
+  }
+  return true;
 }
 
 
