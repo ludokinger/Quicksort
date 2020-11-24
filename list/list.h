@@ -319,7 +319,15 @@ list<K, V> &list<K, V>::operator-=(const K newKey) {
  */
 template <typename K, typename V>
 void list<K, V>::printTo(std::ostream &ostr) const {
-  ostr.clear();
+  if (this->head == nullptr) {
+    ostr << "List is empty";
+  } else {
+    element* nextEl = this->head;
+    while (nextEl != nullptr) {
+      ostr << "Key: " << nextEl->key << ", Value: " << nextEl->value << "\n";
+      nextEl = nextEl->next;
+    }
+  }
 }
 
 
