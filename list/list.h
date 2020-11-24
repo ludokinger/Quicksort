@@ -210,23 +210,23 @@ struct list<K, V>::element* list<K, V>::quicksort(list::element *elem, std::func
                                                         // Best-Case: T(n) = n + n = 2n, T(n) is O(n)
                                                         // => O(n)
 
-  lh = quicksort(lh, lessThan);                         // ((a) + (b) + (d))/2 = T(n/2)                                         (c)
-  rh = quicksort(rh, lessThan);                         // both calls together: 2*T(n/2) = n + 2 * (n/2) + 4 * (n/4) + ...      (c)
-                                                        // Therefore part (c): T(n) = nlogn, T(n) is O(nlogn)
+  lh = quicksort(lh, lessThan);                         // ((a) + (b) + (d))/2 = T(n/2)                                                 (c)
+  rh = quicksort(rh, lessThan);                         // both calls together: 2*T(n/2) = n + 2 * (n/2) + 4 * (n/4) + ... = nlogn      (c)
+                                                        // Therefore recursive part (c): T(n) = nlogn, T(n) is O(nlogn)    (in average case, if pivot is "bad" it's worst case which is O(n^2))
 
   if (lh == nullptr) {                                  // 1         (d)(d1)
     pivot->next = rh;                                   // max. 1    (d)(d1)
     return pivot;                                       // max. 1    (d)(d1)   -> (d1) max 3 operations, min. 1
-  } else {                                              // 1         (d)(d2)
-    element *lh_end = lh;                               // 1         (d)(d2)
+  } else {                                              // max. 1    (d)(d2)
+    element *lh_end = lh;                               // max. 1    (d)(d2)
     while (lh_end->next != nullptr) {                   // max. n    (d)(d2)
-      lh_end = lh_end->next;                            // max. n    (d)(d2)   -> (d2) max. 2n + 2, min. 1
+      lh_end = lh_end->next;                            // max. n    (d)(d2)
     }
-    lh_end->next = pivot;                               // 1         (d)
-    pivot->next = rh;                                   // 1         (d)
-    return lh;                                          // 1         (d)
+    lh_end->next = pivot;                               // 1         (d)(d2)
+    pivot->next = rh;                                   // 1         (d)(d2)
+    return lh;                                          // 1         (d)(d2)   -> (d2) max. 2n + 5, min
   }                                                     // Therefore part (d) is:
-                                                        // Worst-Case: T(n) = 3 + 2n + 2 + 3 = 2n + 8, T(n) is O(n)
+                                                        // Worst-Case: T(n) = 3 + 2n + 5 = 2n + 8, T(n) is O(n)
                                                         // Best-Case:  T(n) = 1, T(n) is O(1)
                                                         // => O(n)
 
