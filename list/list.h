@@ -131,6 +131,7 @@ std::tuple<K, V> list<K, V>::popHead() {
     auto popElem = head;
     head = head->next;
     std::tuple<K, V> tuple (popElem->key, popElem->value);
+    popElem->next = nullptr;
     delete popElem;
     return tuple;
   }
