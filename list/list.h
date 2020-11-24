@@ -19,6 +19,8 @@ class list {
 
   element *head = nullptr;
 
+  element* quicksort(element* elem, std::function<bool(K, K)> lessThan);
+
  public:
   ~list();
 
@@ -120,6 +122,72 @@ std::tuple<K, V> list<K, V>::popHead() {
 template <typename K, typename V>
 void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
   lessThan = nullptr;
+}
+
+
+/**
+ * Sorts list with quicksort.
+ * @tparam K
+ * @tparam V
+ * @param elem
+ * @param lessThan
+ * @return
+ */
+template<typename K, typename V>
+struct list<K, V>::element* list<K, V>::quicksort(list::element *elem, std::function<bool(K, K)> lessThan) {
+
+  if (elem == nullptr || elem->next == nullptr) {
+    return elem;
+  }
+
+  element *current = elem->next;
+  element *next;
+  element *pivot = elem;
+  pivot->next = nullptr;
+  element *lh = nullptr;
+  element *rh = nullptr;
+
+  while (current != nullptr) {
+    if (lessThan(current->key, pivot->key)) {
+      if (lh == nullptr) {
+        lh = current;
+        current = current->next;
+        lh->next = nullptr;
+      } else {
+        next = current->next;
+        current->next = lh;
+        lh = current;
+        current = next;
+      }
+    } else {
+      if (rh == nullptr) {
+        rh = current;
+        current = current->next;
+        rh->next = nullptr;
+      } else {
+        next = current->next;
+        current->next = rh;
+        rh = current;
+        current = next;
+      }
+    }
+  }
+
+  lh = quicksort(lh, lessThan);
+  rh = quicksort(rh, lessThan);
+
+  if (lh == nullptr) {
+    pivot->next = rh;
+    return pivot;
+  } else {
+    element *lh_end = lh;
+    while (lh_end->next != nullptr) {
+      lh_end = lh_end->next;
+    }
+    lh_end->next = pivot;
+    pivot->next = rh;
+    return lh;
+  }
 }
 
 
