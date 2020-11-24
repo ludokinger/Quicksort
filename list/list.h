@@ -81,7 +81,7 @@ const V *list<K, V>::search(const K) const {
  */
 template <typename K, typename V>
 bool list<K, V>::isEmpty() const {
-  return false;
+  return head == nullptr;
 }
 
 
