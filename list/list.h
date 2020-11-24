@@ -15,6 +15,7 @@ class list {
     element *next;
 
     element(const std::tuple<K, V>, element *);
+    ~element();
   };
 
   element *head = nullptr;
@@ -50,7 +51,8 @@ class list {
  * @param element1
  */
 template<typename K, typename V>
-list<K, V>::element::element(const std::tuple<K, V> tuple, list::element *element1) : key(std::get<0>(tuple)),value(std::get<1>(tuple)), next(element1) { }
+list<K, V>::element::element(const std::tuple<K, V> tuple, list::element *element1)
+    : key(std::get<0>(tuple)),value(std::get<1>(tuple)), next(element1) { }
 
 
 /**
@@ -59,7 +61,14 @@ list<K, V>::element::element(const std::tuple<K, V> tuple, list::element *elemen
  * @tparam V
  */
 template <typename K, typename V>
-list<K, V>::~list() {}
+list<K, V>::~list() {
+  delete head;
+}
+
+template <typename K, typename V>
+list<K, V>::element::~element() {
+  delete next;
+}
 
 
 /**
