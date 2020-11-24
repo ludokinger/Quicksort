@@ -39,6 +39,17 @@ class list {
   void printTo(std::ostream &ostr) const;
 };
 
+/**
+ * Constructor for struct element.
+ * @tparam K
+ * @tparam V
+ * @param tuple
+ * @param element1
+ */
+template<typename K, typename V>
+list<K, V>::element::element(const std::tuple<K, V> tuple, list::element *element1) : key(std::get<0>(tuple)),value(std::get<1>(tuple)), next(element1) { }
+
+
 template <typename K, typename V>
 std::ostream &operator<<(std::ostream &ostr, const list<K, V> &list) {
   list.printTo(ostr);
