@@ -123,6 +123,13 @@ bool list<K, V>::isSorted(std::function<bool(K, K)> lessThan) const {
  */
 template <typename K, typename V>
 std::tuple<K, V> list<K, V>::popHead() {
+  if (!isEmpty()) {
+    auto popElem = head;
+    head = head->next;
+    std::tuple<K, V> tuple (popElem->key, popElem->value);
+    delete popElem;
+    return tuple;
+  }
   return std::tuple<K, V>();
 }
 
