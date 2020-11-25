@@ -324,7 +324,7 @@ void list<K, V>::printTo(std::ostream &ostr) const {
   } else {
     element* nextEl = this->head;
     while (nextEl != nullptr) {
-      ostr << "Key: " << nextEl->key << ", Value: " << nextEl->value << "\n";
+      ostr << nextEl->key << "." << nextEl->value << "\n";
       nextEl = nextEl->next;
     }
   }

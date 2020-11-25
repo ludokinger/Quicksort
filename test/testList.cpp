@@ -213,10 +213,10 @@ TEST(ListTest, PrintTo) {
   std::ostringstream out;
   l.printTo(out);
 
-  EXPECT_EQ(out.str(), "Key: 1, Value: Eins\n"
-            "Key: 2, Value: Zwei\n"
-            "Key: 3, Value: Drei\n"
-            "Key: 4, Value: Vier\n");
+  EXPECT_EQ(out.str(), "1.Eins\n"
+            "2.Zwei\n"
+            "3.Drei\n"
+            "4.Vier\n");
 
 }
 
@@ -234,9 +234,9 @@ TEST(ListTest, PrintTo_OperatorOverloading) {
   std::ostringstream out;
   out << l;
 
-  EXPECT_EQ(out.str(), "Key: 1, Value: Eins\n"
-                       "Key: 2, Value: Zwei\n"
-                       "Key: 3, Value: Drei\n"
-                       "Key: 4, Value: Vier\n");
+  EXPECT_EQ(out.str(), "1.Eins\n"
+            "2.Zwei\n"
+            "3.Drei\n"
+            "4.Vier\n");
 
 }
