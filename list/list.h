@@ -44,9 +44,9 @@ class list {
 
 /**
  * Constructor for struct element.
- * @tparam K
- * @tparam V
- * @param tuple
+ * @tparam K The type of key
+ * @tparam V The type of value
+ * @param tuple Tuple with key/value pair
  * @param element1
  */
 template<typename K, typename V>
@@ -56,8 +56,8 @@ list<K, V>::element::element(const std::tuple<K, V> tuple, list::element *elemen
 
 /**
  * Destructor for class list.
- * @tparam K
- * @tparam V
+ * @tparam K The type of key
+ * @tparam V The type of value
  */
 template <typename K, typename V>
 list<K, V>::~list() {
@@ -71,11 +71,11 @@ list<K, V>::~list() {
 
 
 /**
- *
- * @tparam K
- * @tparam V
+ * Searches after element with key
+ * @tparam K The type of key
+ * @tparam V The type of value
  * @param key key to search
- * @return value of element with this key
+ * @return Value of element with this key or nullptr if there is no such element
  */
 template <typename K, typename V>
 const V *list<K, V>::search(const K key) const {
@@ -91,9 +91,9 @@ const V *list<K, V>::search(const K key) const {
 
 /**
  * Checks if list is empty.
- * @tparam K
- * @tparam V
- * @return true if list is empty, false else
+ * @tparam K The type of key
+ * @tparam V The type of value
+ * @return True if list is empty, false else
  */
 template <typename K, typename V>
 bool list<K, V>::isEmpty() const {
@@ -103,10 +103,10 @@ bool list<K, V>::isEmpty() const {
 
 /**
  * Checks if list is sorted
- * @tparam K
- * @tparam V
+ * @tparam K The type of key
+ * @tparam V The type of value
  * @param lessThan function which compares two values
- * @return true if sorted, false if not
+ * @return True if sorted, false if not
  */
 template <typename K, typename V>
 bool list<K, V>::isSorted(std::function<bool(K, K)> lessThan) const {
@@ -126,10 +126,10 @@ bool list<K, V>::isSorted(std::function<bool(K, K)> lessThan) const {
 
 
 /**
- * Removes head from list
- * @tparam K
- * @tparam V
- * @return tuple of element head
+ * Removes head from list, sets new head if there are more than 1 element in list.
+ * @tparam K The type of key
+ * @tparam V The type of value
+ * @return tuple Tuple of element head or empty tuple if list is empty.
  */
 template <typename K, typename V>
 std::tuple<K, V> list<K, V>::popHead() {
@@ -147,9 +147,9 @@ std::tuple<K, V> list<K, V>::popHead() {
 
 /**
  * Sorts list.
- * @tparam K
- * @tparam V
- * @param lessThan function which compares two values
+ * @tparam K The type of key
+ * @tparam V The type of value
+ * @param lessThan Function which compares two keys
  */
 template <typename K, typename V>
 void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
@@ -159,12 +159,12 @@ void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
 
 
 /**
- * Sorts list with quicksort.
- * @tparam K
- * @tparam V
- * @param elem
- * @param lessThan
- * @return a element according to which only sorted elements are
+ * Sorts list with quicksort algorithm.
+ * @tparam K The type of key
+ * @tparam V The type of value
+ * @param elem First element
+ * @param lessThan Function which compares two keys
+ * @return A element according to which only sorted elements are
  */
 template<typename K, typename V>
 struct list<K, V>::element* list<K, V>::quicksort(list::element *elem, std::function<bool(K, K)> lessThan) {
@@ -238,10 +238,10 @@ struct list<K, V>::element* list<K, V>::quicksort(list::element *elem, std::func
 
 /**
  * Adds element at end of list or if key is already in list, replaces it
- * @tparam K
- * @tparam V
- * @param tuple
- * @return
+ * @tparam K The type of key
+ * @tparam V The type of value
+ * @param Tuple with Key/Value pair for the new element
+ * @return Updated list
  */
 template<typename K, typename V>
 list<K, V> &list<K, V>::operator+=(const std::tuple<K, V> el) {
@@ -275,13 +275,13 @@ list<K, V> &list<K, V>::operator+=(const std::tuple<K, V> el) {
 
 /**
  * Removes element by key
- * @tparam K
- * @tparam V
- * @param key
- * @return list
+ * @tparam K The type of key
+ * @tparam V The type of value
+ * @param Key of the element which should get removed
+ * @return (updated) list
  */
 template <typename K, typename V>
-list<K, V> &list<K, V>::operator-=(const K newKey) {
+list<K, V> &list<K, V>::operator-=(const K key) {
   if (head == nullptr) {
     return *this;
   }
@@ -290,7 +290,7 @@ list<K, V> &list<K, V>::operator-=(const K newKey) {
   element *prev = nullptr;
 
   while (current != nullptr) {
-    if (current->key == newKey) {
+    if (current->key == key) {
       element *t = current->next;
       if (prev == nullptr) {
         head->next = nullptr;
@@ -312,10 +312,10 @@ list<K, V> &list<K, V>::operator-=(const K newKey) {
 
 
 /**
- * Prints list
- * @tparam K
- * @tparam V
- * @param ostr
+ * Prints list (Key/Value pairs of all elements)
+ * @tparam K The type of key
+ * @tparam V The type of value
+ * @param ostr Output stream
  */
 template <typename K, typename V>
 void list<K, V>::printTo(std::ostream &ostr) const {
@@ -330,7 +330,14 @@ void list<K, V>::printTo(std::ostream &ostr) const {
   }
 }
 
-
+/**
+ * Prints list (Key/Value pairs of all elements)
+ * @tparam K The type of key
+ * @tparam V The type of value
+ * @param ostr Output stream
+ * @param list The list which should be printed
+ * @return Output stream
+ */
 template <typename K, typename V>
 std::ostream &operator<<(std::ostream &ostr, const list<K, V> &list) {
   list.printTo(ostr);
