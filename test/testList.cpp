@@ -198,3 +198,45 @@ TEST(ListTest, RemoveTest_RemoveNotPresentKey) {
   EXPECT_FALSE(l.isEmpty());
   EXPECT_EQ(std::get<1>(l.popHead()), "Eins");
 }
+
+TEST(ListTest, PrintTo) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  std::tuple<int, std::string> tin3(3, "Drei");
+  std::tuple<int, std::string> tin4(4, "Vier");
+  l += tin1;
+  l += tin2;
+  l += tin3;
+  l += tin4;
+
+  std::ostringstream out;
+  l.printTo(out);
+
+  EXPECT_EQ(out.str(), "Key: 1, Value: Eins\n"
+            "Key: 2, Value: Zwei\n"
+            "Key: 3, Value: Drei\n"
+            "Key: 4, Value: Vier\n");
+
+}
+
+TEST(ListTest, PrintTo_OperatorOverloading) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  std::tuple<int, std::string> tin3(3, "Drei");
+  std::tuple<int, std::string> tin4(4, "Vier");
+  l += tin1;
+  l += tin2;
+  l += tin3;
+  l += tin4;
+
+  std::ostringstream out;
+  out << l;
+
+  EXPECT_EQ(out.str(), "Key: 1, Value: Eins\n"
+                       "Key: 2, Value: Zwei\n"
+                       "Key: 3, Value: Drei\n"
+                       "Key: 4, Value: Vier\n");
+
+}
